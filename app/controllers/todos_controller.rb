@@ -10,8 +10,9 @@ class TodosController < ApplicationController
     def create
         @todo=Todo.new(todo_params)
         if @todo.save
-            redirect_to todos_path
+            redirect_to todos_path, notice: "Todo was successfully created."
         else
+            flash.now[:alert] = "Failed to create todo."
             render :new, status: :unprocessable_entity
         end
 
@@ -24,8 +25,9 @@ class TodosController < ApplicationController
     def update
         @todo=Todo.find_by(id: params[:id])
         if @todo.update(todo_params)
-            redirect_to todos_path
+            redirect_to todos_path, notice: "Todo was successfully updated."
         else
+            flash.now[:alert] = "Failed to update todo."
             render :edit, status: :unprocessable_entity
         end
     end
@@ -33,7 +35,7 @@ class TodosController < ApplicationController
     def destroy
         @todo=Todo.find_by(id: params[:id])
         @todo.destroy
-        redirect_to todos_path
+        redirect_to todos_path, notice: "Todo was successfully deleted."
     end
 
     private
